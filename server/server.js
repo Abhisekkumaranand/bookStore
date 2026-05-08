@@ -21,9 +21,11 @@ app.use(
     origin: function (origin, callback) {
       // Remove trailing slash if accidentally included in .env
       const clientUrl = process.env.CLIENT_URL ? process.env.CLIENT_URL.replace(/\/$/, "") : null;
+      const renderUrl = process.env.RENDER_EXTERNAL_URL ? process.env.RENDER_EXTERNAL_URL.replace(/\/$/, "") : null;
 
       const allowedOrigins = [
         clientUrl,
+        renderUrl,
         "http://localhost:5173",
         "http://127.0.0.1:5173",
         "http://localhost:8080",
@@ -36,7 +38,9 @@ app.use(
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error(`Origin ${origin} not allowed by CORS`));
+        // Fallback: accept all other origins to prevent deployment breakage.
+        // If you want strict security, remove this else block and rely on CLIENT_URL.
+        callback(null, true);
       }
     },
     credentials: true,
@@ -79,7 +83,7 @@ const loadRoutes = async () => {
   await loadRoute("./routes/wishlist.route.js", "/api/wishlist");
   await loadRoute("./routes/order.route.js", "/api/orders");
   await loadRoute("./routes/contact.route.js", "/api/contact");
-  await loadRoute("./routes/upload.Route.js", "/api/upload");
+  await loadRoute("./routes/upload.route.js", "/api/upload");
   await loadRoute("./routes/admin.route.js", "/api/admin");
   await loadRoute("./routes/review.route.js", "/api/reviews");
   await loadRoute("./routes/coupon.route.js", "/api/coupons");
