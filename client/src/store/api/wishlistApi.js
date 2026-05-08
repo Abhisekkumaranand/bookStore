@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const wishlistApi = createApi({
   reducerPath: "wishlistApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/wishlist",
+    baseUrl: import.meta.env.PROD ? "/api/wishlist" : "http://localhost:5000/api/wishlist",
     credentials: "include",
   }),
   tagTypes: ["Wishlist", "Cart"],

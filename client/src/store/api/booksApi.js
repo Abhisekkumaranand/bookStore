@@ -4,7 +4,7 @@ export const booksApi = createApi({
   reducerPath: "booksApi",
   // Using your real backend URL and including credentials so auth cookies are sent
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api",
+    baseUrl: import.meta.env.PROD ? "/api" : "http://localhost:5000/api",
     credentials: "include"
   }),
   endpoints: (b) => ({
