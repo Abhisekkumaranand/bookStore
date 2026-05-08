@@ -1,0 +1,1 @@
+export const validateBody = (req, res, next) => { next(); };
