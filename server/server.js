@@ -90,20 +90,18 @@ const loadRoutes = async () => {
   await loadRoute("./routes/payment.route.js", "/api/payments");
   await loadRoute("./routes/analytics.route.js", "/api/analytics");
   await loadRoute("./routes/newsletter.route.js", "/api/newsletter");
+
+  // ─── API 404 Handler (Must be before frontend catch-all) ───────────────────
+  app.use("/api", (req, res) => {
+    res.status(404).json({ message: `API Route not found: ${req.originalUrl}` });
+  });
+
   app.use(express.static(path.join(__dirname, "../client/dist")));
 
   // ─── Serve Frontend in Production ──────────────────────────────────────────
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../client/dist/index.html"));
   });
-
-
-  // ─── 404 Handler ───────────────────────────────────────────────────────────
-  app.use((req, res) => {
-    res.status(404).json({ message: `Route not found: ${req.originalUrl}` });
-  });
-
-
 
   // ─── Global Error Handler ───────────────────────────────────────────────────
   app.use((err, req, res, next) => {
