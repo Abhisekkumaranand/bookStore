@@ -21,8 +21,8 @@ function BookForm({ book, onClose, onSuccess }) {
     setLoading(true);
     try {
       const url = book 
-        ? `http://localhost:5000/api/books/${book._id || book.id}` 
-        : `http://localhost:5000/api/books`;
+        ? `/api/books/${book._id || book.id}` 
+        : `/api/books`;
       const method = book ? "PUT" : "POST";
       
       const res = await fetch(url, {
@@ -79,7 +79,7 @@ function BooksManager() {
   const handleDelete = async (id) => {
     if (confirm("Are you sure you want to delete this book?")) {
       try {
-        const res = await fetch(`http://localhost:5000/api/books/${id}`, {
+        const res = await fetch(`/api/books/${id}`, {
           method: "DELETE",
           credentials: "include"
         });
